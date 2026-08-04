@@ -49,6 +49,24 @@ asserted in runnable CPU examples; the documentation also explains why
 readable PyTorch storage code is not an optimized low-bit inference kernel. See
 [`quantization/README.md`](quantization/README.md).
 
+## Hafta 4: embedding ve vektör arama
+
+[`embedding/`](embedding/) aynı Türkçe isim verisini üretmek yerine **vektör
+uzayına yerleştiren** bir ders modülüdür. Üç yaklaşımı yan yana kurar: karakter
+ortalaması baseline'ı, RMSNorm/QK-Norm/RoPE/SwiGLU kullanan çift yönlü
+Transformer bi-encoder ve ColBERT-benzeri MaxSim late interaction. In-batch
+contrastive öğrenme, 8/16/32 boyutlu Matryoshka hedefi, harf/isim benzerliği
+demosu, exact cosine vektör indeksi, testler ve haftalık proje yönergesi birlikte
+gelir. Başlangıç noktası: [`embedding/README.md`](embedding/README.md).
+
+Güncel ailelerin imza tarifleri ayrıca üç bağımsız, küçük klasörde işlenir:
+[`qwen3_embedding/`](qwen3_embedding/) causal Qwen3 + instruction + EOS pooling'i,
+[`embedding_gemma/`](embedding_gemma/) çift yönlü Gemma encoder + mean pooling +
+GOR tarifini, [`qwen3_vl_embedding/`](qwen3_vl_embedding/) ise text/image ortak
+uzayı, vision patch merger ve multimodal EOS pooling'i gösterir.
+Karşılaştırmalı ve ayrıntılı ders anlatımı için
+[`embedding/MIMARI_REHBERI.md`](embedding/MIMARI_REHBERI.md) dosyasını okuyun.
+
 ## Design rules
 
 - **One module = one file.** `config → rms_norm → rotary → attention → mlp → block → model`.
