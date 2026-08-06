@@ -1,0 +1,26 @@
+[
+  {
+    "id": "iade",
+    "title": "İade ve değişim politikası",
+    "category": "siparis",
+    "text": "Müşteriler teslim tarihinden itibaren 14 gün içinde iade talebi oluşturabilir. Ürün kullanılmamış ve orijinal ambalajında olmalıdır. İade kargo etiketi hesap sayfasından ücretsiz oluşturulur. Kişiye özel üretilen ürünler yalnızca kusurluysa iade edilebilir. Onaylanan ücret iadeleri 3 ila 5 iş günü içinde ödeme aracına yansır."
+  },
+  {
+    "id": "kargo",
+    "title": "Kargo ve teslimat",
+    "category": "siparis",
+    "text": "Standart kargo İstanbul içinde 1 ila 2 iş günü, diğer şehirlerde 2 ila 4 iş günü sürer. Saat 14.00'e kadar verilen siparişler aynı iş gününde hazırlanır. Kargo takip bağlantısı paket taşıyıcıya teslim edildiğinde e-posta ile gönderilir. 1000 TL ve üzerindeki siparişlerde standart kargo ücretsizdir."
+  },
+  {
+    "id": "uyelik",
+    "title": "Üyelik ve parola",
+    "category": "hesap",
+    "text": "Parolanızı unuttuysanız giriş ekranındaki Parolamı Unuttum bağlantısını kullanın. Sıfırlama bağlantısı 30 dakika geçerlidir ve yalnızca bir kez kullanılabilir. E-posta ulaşmazsa spam klasörünü kontrol edin. Üyeliği silmek için hesap ayarlarında Gizlilik bölümünü açın; silme işlemi geri alınamaz."
+  },
+  {
+    "id": "gizlilik",
+    "title": "Veri ve gizlilik",
+    "category": "hesap",
+    "text": "Sipariş kayıtları yasal yükümlülükler için 10 yıl saklanır. Pazarlama e-postası izni hesap ayarlarından her zaman geri çekilebilir. Destek görüşmeleri hizmet kalitesini izlemek amacıyla 90 gün tutulur. Kullanıcı, hesabındaki Verilerimi İndir düğmesiyle kişisel verilerinin bir kopyasını talep edebilir."
+  }
+]

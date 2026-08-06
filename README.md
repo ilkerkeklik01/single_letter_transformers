@@ -67,6 +67,16 @@ uzayı, vision patch merger ve multimodal EOS pooling'i gösterir.
 Karşılaştırmalı ve ayrıntılı ders anlatımı için
 [`embedding/MIMARI_REHBERI.md`](embedding/MIMARI_REHBERI.md) dosyasını okuyun.
 
+## Bonus: RAG temelleri ve uçtan uca retrieval
+
+[`rag/`](rag/) embedding bilgisini gerçek bir retrieval-augmented generation
+akışına bağlayan bağımsız bir ders laboratuvarıdır. Cosine benzerliğini elle
+hesaplayan örneklerden başlayıp sabit/cümle/yapı-duyarlı chunking, in-memory ve
+SQLite exact vektör depoları, metadata filtreleme, grounded prompt, kaynak
+gösterme ve Recall@k/MRR değerlendirmesine ilerler. Bağımlılıksız demo yanında
+aynı arayüzle çalışan güncel Ollama HTTP API ve Hugging Face Transformers
+adaptörleri bulunur. Başlangıç noktası: [`rag/README.md`](rag/README.md).
+
 ## Design rules
 
 - **One module = one file.** `config → rms_norm → rotary → attention → mlp → block → model`.
