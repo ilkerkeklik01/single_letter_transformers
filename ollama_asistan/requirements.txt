@@ -1,0 +1,3 @@
+chromadb>=1.0     # vektor veritabani
+datasets>=3.0     # Hugging Face veri setini indirmek icin
+requests>=2.31    # Ollama ve web API'leri icin HTTP

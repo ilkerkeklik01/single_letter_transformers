@@ -17,6 +17,7 @@ env/
 *.pt
 *.wav
 temiz_isimler.txt
+ollama_asistan/chroma_db/
 
 # Editor and assistant metadata
 .claude/
