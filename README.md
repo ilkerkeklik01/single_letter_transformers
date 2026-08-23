@@ -5,22 +5,26 @@ to read top to bottom and train on a laptop CPU in under a minute. Every model l
 the same toy task — **generate Turkish first names one letter at a time** — so you can
 compare architectures directly instead of getting lost in scale.
 
-Four language-model architectures, same task, side by side — plus a fifth
-folder that is a different beast entirely (a four-model audio pipeline):
+Six language-model architectures, same task, side by side — plus a folder
+that is a different beast entirely (a four-model audio pipeline):
 
-| Folder                     | Architecture           | What makes it different                                                                               |
-| -------------------------- | ---------------------- | ----------------------------------------------------------------------------------------------------- |
-| [`qwen3/`](qwen3/)         | **Qwen3 dense**        | The clean modern baseline: RMSNorm, QK-Norm, GQA, RoPE, SwiGLU, pre-norm                              |
-| [`qwen3_5/`](qwen3_5/)     | **Qwen3.5 hybrid**     | Adds **Gated DeltaNet** linear-attention layers, interleaved with full attention                      |
-| [`gemma4/`](gemma4/)       | **Gemma**              | **Sandwich norm**, local/global **sliding-window** attention, dual RoPE, **GeGLU**, embedding scaling |
-| [`deepseek3/`](deepseek3/) | **DeepSeek-V3 sparse** | **MLA** compressed-KV attention + **MoE** with a shared expert and **aux-loss-free** load balancing   |
-| [`acestep/`](acestep/)     | **ACE-Step v1.5**      | Not an LM: a **planner LM + FSQ bridge + diffusion DiT + VAE** that turn a letter into a **waveform** |
+| Folder                           | Architecture           | What makes it different                                                                                              |
+| -------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| [`qwen3/`](qwen3/)               | **Qwen3 dense**        | The clean modern baseline: RMSNorm, QK-Norm, GQA, RoPE, SwiGLU, pre-norm                                             |
+| [`qwen3_5/`](qwen3_5/)           | **Qwen3.5 hybrid**     | Adds **Gated DeltaNet** linear-attention layers, interleaved with full attention                                     |
+| [`qwen3_8/`](qwen3_8/)           | **Qwen3.8**            | Qwen3.5's architecture, exact: delta rule, MoE + shared expert, **MTP head**, vision — loads the real 27B / 2.4T     |
+| [`gemma4/`](gemma4/)             | **Gemma 4**            | Text **+ vision + audio**: per-layer embeddings, KV sharing, MoE, a Conformer — loads the real e2b / 26B weights     |
+| [`deepseek3/`](deepseek3/)       | **DeepSeek-V3 sparse** | **MLA** compressed-KV attention + **MoE** with a shared expert and **aux-loss-free** load balancing                  |
+| [`muse_glimmer/`](muse_glimmer/) | **Muse Glimmer 30B**   | Text **+ vision**: gated attention, NoPE layers, windowed ViT — same code loads the real 30B weights                 |
+| [`acestep/`](acestep/)           | **ACE-Step v1.5**      | Not an LM: a **planner LM + FSQ bridge + diffusion DiT + VAE** that turn a letter into a **waveform**                |
 
-> The goal is _clarity_, not fidelity. Each folder implements the architecture's
-> signature ideas in the simplest correct form; large-scale tricks (MatFormer,
-> chunked-parallel DeltaNet, 256-expert routing, 256k vocab, multi-token
-> prediction, etc.) are intentionally left out. See each folder's notes for what
-> is simplified.
+> **Two kinds of folder.** `qwen3/`, `qwen3_5/`, `deepseek3/` and `acestep/` go for
+> _clarity over fidelity_: they implement each architecture's signature ideas in the
+> simplest correct form and leave the large-scale machinery out. `qwen3_8/`,
+> `gemma4/` and `muse_glimmer/` are **clarity _and_ fidelity**: still readable
+> top-to-bottom, but verified **bit-exact against the HuggingFace reference**, and
+> the same code loads the real released checkpoints by swapping one config. Each of
+> those three ships a `verify_against_hf.py` that proves it.
 
 ## Bonus: fine-tuning techniques
 
@@ -100,7 +104,7 @@ Regenerate the clean file: `cd data && python3 temizle_isimler.py`
 Each folder works the same way. From inside a model folder:
 
 ```bash
-cd qwen3        # or qwen3_5, gemma4, or deepseek3
+cd qwen3        # or qwen3_5, qwen3_8, gemma4, deepseek3, or muse_glimmer
 python3 train.py        # trains a few thousand steps, prints loss, samples names, saves a checkpoint
 python3 generate.py 20      # generate 20 names
 python3 generate.py 20 0.7  # lower temperature = safer / more common names
@@ -126,16 +130,16 @@ folder uses flat imports (`from model import ...`), so add the folder you want t
 **Train from a cell** (simplest — just run the script):
 
 ```python
-!cd qwen3 && python train.py      # or qwen3_5, gemma4, or deepseek3
+!cd qwen3 && python train.py      # or qwen3_5, qwen3_8, gemma4, deepseek3, or muse_glimmer
 ```
 
 **Or train inline** (handy for tweaking hyperparameters live):
 
 ```python
 import sys, torch
-sys.path.insert(0, "qwen3")                      # pick ONE: qwen3 / qwen3_5 / gemma4 / deepseek3
+sys.path.insert(0, "qwen3")                      # pick ONE: qwen3 / qwen3_5 / qwen3_8 / gemma4 / deepseek3 / muse_glimmer
 from config import ModelConfig
-from model import TinyQwen                         # TinyQwen35 / TinyGemma / TinyDeepSeek in the others
+from model import TinyQwen                         # TinyQwen35 / TinyGemma / TinyDeepSeek / MuseGlimmer in the others
 from tokenizer import CharTokenizer
 
 tok = CharTokenizer.from_file("data/temiz_isimler.txt")

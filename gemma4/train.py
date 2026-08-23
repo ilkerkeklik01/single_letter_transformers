@@ -48,9 +48,21 @@ def get_batch():
 cfg = ModelConfig(vocab_size=vocab_size)
 model = TinyGemma(cfg).to(device)
 n_params = sum(p.numel() for p in model.parameters())
-layer_types = ["global" if g else "local" for g in model.layer_is_global]
 print(f"device={device}  vocab_size={vocab_size}  parameters={n_params:,}")
-print(f"layers: {layer_types}")
+
+# Show what each layer actually is: sliding vs full attention, whether it reuses
+# an earlier layer's keys/values, and whether it got the double-wide MLP.
+print("layer schedule:")
+for i, layer_type in enumerate(cfg.layer_types):
+    tags = []
+    if cfg.is_kv_shared(i):
+        tags.append("kv-shared")
+    if cfg.stores_shared_kv(i):
+        tags.append("stores-kv")
+    if cfg.uses_double_wide_mlp(i):
+        tags.append("2x-mlp")
+    print(f"  layer {i}: {layer_type:18s} head_dim={cfg.head_dim_for(i):3d}"
+          f"  {' '.join(tags)}")
 
 optimizer = torch.optim.AdamW(model.parameters(), lr=LEARNING_RATE)
 
