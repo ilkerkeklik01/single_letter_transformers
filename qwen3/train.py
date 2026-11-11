@@ -1,10 +1,10 @@
-"""Train the tiny Qwen3-style model to generate Turkish names.
+"""Train the tiny Qwen3-style model to generate Turkish street names.
 
 Run:  python train.py
 
 This script is intentionally linear and dependency-free (just torch). It reads
-the cleaned names, builds a trivial character vocabulary inline, trains with a
-plain loop, then samples a few names.
+the cleaned street names, builds a trivial character vocabulary inline, trains
+with a plain loop, then samples a few street names.
 """
 
 import os
@@ -19,7 +19,9 @@ from tokenizer import CharTokenizer
 # Hyperparameters
 # ---------------------------------------------------------------------------
 # Shared dataset lives one level up in ../data/ .
-DATA_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "temiz_isimler.txt")
+DATA_FILE = os.path.join(
+    os.path.dirname(__file__), "..", "data", "temiz_sokak_isimleri.txt"
+)
 BATCH_SIZE = 64
 BLOCK_SIZE = 16        # context length used during training (<= cfg.max_seq_len)
 STEPS = 3000
@@ -60,20 +62,20 @@ optimizer = torch.optim.AdamW(model.parameters(), lr=LEARNING_RATE)
 
 
 # ---------------------------------------------------------------------------
-# Sampling helper: generate a few names starting from the newline token.
+# Sampling helper: generate a few street names starting from the newline token.
 # ---------------------------------------------------------------------------
-def sample_names(n: int = 10, max_new_tokens: int = 20):
+def sample_street_names(n: int = 10, max_new_tokens: int = 40):
     model.eval()
     start = torch.full((n, 1), tokenizer.newline_id, dtype=torch.long, device=device)
     out = model.generate(start, max_new_tokens=max_new_tokens, temperature=1.0,
                          top_k=None, eos_id=tokenizer.eos_id)
     model.train()
-    names = []
+    street_names = []
     for row in out.tolist():
         # Drop the leading newline, then keep up to the next newline.
         s = tokenizer.decode(row[1:])
-        names.append(s.split("\n")[0])
-    return names
+        street_names.append(s.split("\n")[0])
+    return street_names
 
 
 # ---------------------------------------------------------------------------
@@ -91,9 +93,9 @@ for step in range(1, STEPS + 1):
         print(f"step {step:5d}  loss {loss.item():.4f}")
 
 print("\nbaseline loss (uniform guessing): %.4f" % (torch.log(torch.tensor(float(vocab_size)))))
-print("\nsample names:")
-for name in sample_names(10):
-    print("  ", name)
+print("\nsample street names:")
+for street_name in sample_street_names(10):
+    print("  ", street_name)
 
 torch.save({"model": model.state_dict(), "chars": tokenizer.chars, "cfg": cfg},
            "tiny_qwen.pt")

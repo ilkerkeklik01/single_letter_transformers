@@ -99,6 +99,17 @@ adaptörleri bulunur. Başlangıç noktası: [`rag/README.md`](rag/README.md).
 
 Regenerate the clean file: `cd data && python3 temizle_isimler.py`
 
+### Street-name exercise
+
+- [`data/sokak_isimleri.txt`](data/sokak_isimleri.txt) — 50 Turkish street and avenue names
+- [`data/temiz_sokak_isimleri.txt`](data/temiz_sokak_isimleri.txt) — lowercased names with spaces preserved
+- [`data/temizle_sokak_isimleri.py`](data/temizle_sokak_isimleri.py) — normalizes Turkish casing,
+  whitespace, and duplicate entries
+
+The names are based on the Ankara Metropolitan Municipality's official
+[street-name changes list](https://www.ankara.bel.tr/degisen-cadde-ve-sokak-isimleri).
+Regenerate the clean file with `cd data && python3 temizle_sokak_isimleri.py`.
+
 ## Run it
 
 Each folder works the same way. From inside a model folder:
